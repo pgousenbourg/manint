@@ -1,0 +1,15 @@
+Installation Instructions:
+
+Most of the files are '.m' files that are ready to be run by MATLAB.  Just make
+sure that this directory is in the MATLAB path.
+
+the "model3d" and "serialize" functions are MATLAB mex functions that must be
+compiled.  Binaries are included for Windows (32-bit) and Linux (32-bit and
+64-bit), compiled with MATLAB release 2007a. The linux compiler is gcc
+version 4.5.1.  The windows compiler is Microsoft Visual C++ 8.0.
+
+
+The binary mex files can be recompiled from the src directory.  Included are a 
+Makefile that works on Linux systems and can be re-configured easily for
+different unix-like systems.  Also included are the Visual Studio Solution
+object that can be loaded into the Visual C++ compiler.

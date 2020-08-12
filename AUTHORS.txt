@@ -1,0 +1,9 @@
+The "Manint" software has been developped by:
+==============================================================
+
+Pierre-Yves Gousenbourger <pierre-yves.gousenbourger@uclouvain.be> (Universite catholique de Louvain (UCL), Belgium)
+Antoine Arnould (Université catholique de Louvain (UCL), Belgium)
+Ronny Bergmann (Technische Universitat Chemnitz)
+Benedikt Wirth (Universitat Muenster)
+Paul Striewski (Universitat Muenster)
+Estelle Massart (Université catholique de Louvain)

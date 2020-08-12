@@ -1,0 +1,32 @@
+﻿===============================
+1D Bezier interpolation is a ready-to-use toolbox that interpolates a
+set of data points d0,...,dn on a manifold M by means of Bezier curves.
+
+Copyright (C) <2014-2018> <Université catholique de Louvain (UCL), Belgique>
+	
+The list of the contributors to the development of "Manint" is given in the AUTHORS file.
+
+Main contact: pierre-yves.gousenbourger@uclouvain.be
+
+-----------------------------------------
+
+This program (Manint) is free software: 
+you can redistribute it and/or modify it under the terms of the 
+GNU General Public License as published by the Free Software Foundation, 
+either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program (see COPYING file).  If not, 
+see <http://www.gnu.org/licenses/>.
+*************************************************************************
+
+*OPTIONNEL*
+[The documentation for this program is under a creative commons attribution share-alike
+4.0 license.  http://creativecommons.org/licenses/by-sa/4.0/
+It can be found here:  https://site]
+*************************************************************************
