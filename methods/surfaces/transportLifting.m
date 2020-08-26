@@ -1,4 +1,4 @@
-function tangentValues = transportLifting(M,rootPoints,dataPoints,domains,rootCoords,dataCoords)
+function tangentValues = transportLifting(M,rootPoints,dataPoints,domains,rootCoords,dataCoords,coarse)
 % Lifts the dataPoints in the tangent space of each rootPoint by
 % by following the shortest path in the domain.
 %
@@ -18,6 +18,10 @@ function tangentValues = transportLifting(M,rootPoints,dataPoints,domains,rootCo
 %          domains, the domain where the rootPoints are set.
 %          rootCoords, the coordinates of the rootPoints.
 %          dataCoords, the coordinates of the dataPoints.
+%          coarse (optional) is a boolean that specifies if the points
+%            must be approximated by a linear surface within a patch
+%            (default: 0).
+%            coarse and pointsCoords must be provided together.
 %
 % outputs: tangentValues, a [PxQ]-cell containing the lifted
 %            version of the points to the tangent spaces at rootPoints.
@@ -29,6 +33,7 @@ function tangentValues = transportLifting(M,rootPoints,dataPoints,domains,rootCo
 % Change log:
 % 	Jan. 20, 2020 (PYG) - First version.
 %   Jan. 27, 2020 (PYG) - Renewed version based on pointsLifting
+%   Aug. 25, 2020 (PYG) - Adaptation to coarseLifting.
 
 % Manint - Copyright (C) <2014-2020> <Université catholique de Louvain (UCL), Belgique>
 %	
@@ -49,6 +54,9 @@ function tangentValues = transportLifting(M,rootPoints,dataPoints,domains,rootCo
 % along with this program (see COPYING file).  If not, 
 % see <http://www.gnu.org/licenses/>.
 
+  if nargin < 7
+    coarse = false;
+  end
   if ~iscell(dataPoints)
     temp = dataPoints;
     dataPoints = cell(1,1);
@@ -83,23 +91,37 @@ function tangentValues = transportLifting(M,rootPoints,dataPoints,domains,rootCo
   % stores the indexes of the routes in a cell
   routes = cell(sRoots,sRoots);
   tangentValues = cell(sRoots,sData);
+  sDomains = unique(dataDomains); % domains on which there are dataPoints
   
   for out = 1:sRoots
-  for j = 1:sData
-    % step 1: detect the domain where the dataPoint lies
-    i = dataDomains(j);
-    % step 2: detect the index of optimal first rootPoint
-    corners = domains(i,2:5);
-    cornerCoords = rootCoords(corners,:);
-    diff    = sum((repmat(rootCoords(out,:),4,1) - cornerCoords).^2,2);
-    [~,idx] = min(diff);
-    in      = corners(idx);
-    % step 3: compute the optimal route if necessary (i.e. if the route wasn't already computed)
-    if isempty(routes{in,out})
-      [~,routes{in,out}] = dijkstra(A,in,out);
+    %for j = 1:sData
+      %% step 1: detect the domain where the dataPoint lies
+      %i = dataDomains(j);
+      %% step 1.5: group dataPoints by domain (storage of indices);
+      
+    %end
+    for j = 1:length(sDomains);
+      % step 1: find the dataPoints who are in the domain
+      i = sDomains(j);
+      ptsIdx = find(dataDomains == i);
+      points = dataPoints(ptsIdx);
+      pointsCoords = dataCoords(ptsIdx,:);
+      
+      % step 2: detect the index of optimal first rootPoint
+      corners = domains(i,2:5);
+      cornerCoords = rootCoords(corners,:);
+      diff    = sum((repmat(rootCoords(out,:),4,1) - cornerCoords).^2,2);
+      [~,idx] = min(diff);
+      in      = corners(idx);
+      
+      % step 3: compute the optimal route if necessary (i.e. if the route wasn't already computed)
+      if isempty(routes{in,out})
+        [~,routes{in,out}] = dijkstra(A,in,out);
+      end
+      nodes = rootPoints(routes{in,out});
+      
+      % step 4: transport and lifting
+      tangentValues(out,ptsIdx) = pointsLifting(M,nodes,points,coarse,pointsCoords);
     end
-    nodes = rootPoints(routes{in,out});
-    % step 4: transport and lifting
-    tangentValues(out,j) = pointsLifting(M,nodes,dataPoints{j});
   end
 end
